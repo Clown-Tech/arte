@@ -37,7 +37,29 @@ router.get("/addImage", async (req, res) => {
  */
 
 router.post("/addImage", async (req, res) => {
+  AddImage.find({ handle: req.body.handle}).then(user => {
+    var isContentThere = false;
+    for(let i = 0; i < user.length; i++){
+      if(user[i].title === req.body.title){
+        isContentThere = true;
+        break;
+      }
+    }
+    if (isContentThere) {
+      return res.status(400).json({ title: "content already exists" });
+    } else {
+      AddImage.insertMany(req.body, (error, docs) => {
+        if (error) {
+          res.send(error);
+        }
 
+        if (docs) {
+          res.send(docs);
+        }
+      });
+    }
+  });
+  /*
   AddImage.insertMany(req.body, (error, docs) => {
     if (error) {
       res.send(error);
@@ -46,19 +68,7 @@ router.post("/addImage", async (req, res) => {
     if (docs) {
       res.send(docs);
     }
+    */
   });
-  /*
-  AddImage.findOne({ email: req.body.email }).then(user => {
-    if (user) {
-      console.log(user);
-      console.log("user");
-      return res.status(400).json({ email: "Email already exists" });
-    } else {
-      console.log(user);
-      console.log("else");
-    }
-  });
-  */
-});
 
 module.exports = router;
