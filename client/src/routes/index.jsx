@@ -1,4 +1,5 @@
 import DbCreate from "../db";
+import Landing from "../landing";
 import App from "../main";
 
 const routes = [
@@ -9,6 +10,10 @@ const routes = [
   {
     path: "/db",
     component: DbCreate
+  },
+  {
+    path: "/landing",
+    component: Landing
   }
 ];
 

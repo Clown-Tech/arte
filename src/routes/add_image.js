@@ -1,23 +1,35 @@
 const router = require('express').Router();
 const AddImage = require('../models').models.AddImage;
+const uniqid = require("uniqid");
+var rn = require('random-number');
+const countries = require("../constants/countries.js");
 /*
 mailing.get('/mailing/:id', async (req, res) => { });
 mailing.get('/mailing', async (req, res) => { res.send('mailing') });
 mailing.post('/mailing/:id', async (req, res) => { });
 */
 
-//router.get('/mailing', async (req, res) => { res.send('hello world') });
-
-router.get("/addImage", async (req, res) => {
-  console.log("received!");
-  res.send("received");
+router.get('/addImage', async (req, res) => {
+AddImage.find({}).then(user => {
+  //console.log(user);
+  res.send(user);
   /*
-  AddImage.findOne({ email: req.body.email }).then(user => {
-    console.log(user);
-      res.send("found user");
+  var isContentThere = false;
+  for(let i = 0; i < user.length; i++){
+    if(user[i].title === req.body.title){
+      isContentThere = true;
+      break;
+    }
+  }
+  if (isContentThere) {
+    return res.status(400).json({ title: "content already exists" });
+  } else {
+    res.send(req.body);
+    }
+    */
   });
-  */
-});
+ });
+
 
 /**
  * @api {post} /api/mailing Add new Mailers(s)
@@ -36,6 +48,19 @@ router.get("/addImage", async (req, res) => {
  * @apiError (Forbidden 403)     Forbidden     Only admins can access the data
  */
 
+
+ function fakeDemographicData(){
+   countriesNum = rn({min:  0, max:  20, integer: true});
+   data = [];
+   for(var i = 0; i < countriesNum; i++){
+     country = rn({min:  0, max:  240, integer: true});
+     data.push([countries[country].name,rn({min:  0, max:  400, integer: true})])
+   }
+   //console.log(data);
+   return data;
+ }
+
+
 router.post("/addImage", async (req, res) => {
   AddImage.find({ handle: req.body.handle}).then(user => {
     var isContentThere = false;
@@ -48,7 +73,15 @@ router.post("/addImage", async (req, res) => {
     if (isContentThere) {
       return res.status(400).json({ title: "content already exists" });
     } else {
-      AddImage.insertMany(req.body, (error, docs) => {
+      var body = req.body;
+      body = {...body,
+        votes: rn({min:  0, max:  1000, integer: true}),
+        viewerCount: rn({min:  0, max:  50000, integer: true}),
+        postID: uniqid(),
+        demographic: fakeDemographicData()
+       }
+      //console.log(body);
+      AddImage.insertMany(body, (error, docs) => {
         if (error) {
           res.send(error);
         }

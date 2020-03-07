@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const uniqid = require("uniqid");
-var rn = require('random-number');
 
 const AddImageSchema = new mongoose.Schema({
   handle: {
@@ -24,21 +22,26 @@ const AddImageSchema = new mongoose.Schema({
   votes: {
     type: Number,
     alias: "user's post value",
-    default: rn({min:  0, max:  1000, integer: true}),
+    default: 0,
   },
   viewerCount: {
     type: Number,
     alias: "user viewer value",
-    default: rn({min:  0, max:  50000, integer: true}),
+    default: 0,
   },
   postID: {
     type: String,
     alias: "user's post ID",
-    default: uniqid(),
+    default: "",
   },
   comments: {
     type: Array,
     alias: "user's post comments",
+    default: [],
+  },
+  demographic:{
+    type: Array,
+    alias: "user's viewer demographic",
     default: [],
   }
 });
