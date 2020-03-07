@@ -34,7 +34,7 @@ class DbCreate extends React.Component {
     }
 
   handleSubmit(event) {
-    event.preventDefault();
+    //event.preventDefault();
     console.log("submit");
     console.log("user Handle:", this.state.handle);
     console.log("user title:", this.state.title);
