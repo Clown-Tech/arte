@@ -62,6 +62,8 @@ AddImage.find({}).then(user => {
 
 
 router.post("/addImage", async (req, res) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   AddImage.find({ handle: req.body.handle}).then(user => {
     var isContentThere = false;
     for(let i = 0; i < user.length; i++){
