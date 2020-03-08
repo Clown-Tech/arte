@@ -10,7 +10,6 @@ class DbCreate extends React.Component {
       title: "",
       url: ""
     };
-
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
