@@ -9,9 +9,16 @@ mailing.get('/mailing', async (req, res) => { res.send('mailing') });
 mailing.post('/mailing/:id', async (req, res) => { });
 */
 
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
 router.get('/addImage', async (req, res) => {
 AddImage.find({}).then(user => {
-  //console.log(user);
+  shuffleArray(user);
   res.send(user);
   /*
   var isContentThere = false;

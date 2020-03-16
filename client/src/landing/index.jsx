@@ -9,8 +9,7 @@ class Landing extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: "",
-      add: false
+      data: ""
     };
     this.renderCards = this.renderCards.bind(this);
     this.myFunc = this.myFunc.bind(this);
@@ -20,6 +19,7 @@ class Landing extends React.Component {
     var cardArray = [];
     for(var i = 0; i <  Object.keys(this.state.data).length; i++){
       cardArray.push(
+        <div className = "cardClass">
         <Card style={{ width: '80vh', color: 'black' }}>
         <Card.Img variant="top" src={this.state.data[i].url} />
         <Card.Body>
@@ -28,9 +28,10 @@ class Landing extends React.Component {
         {this.state.data[i].handle}
         </Card.Text>
         <Card.Link> <FontAwesomeIcon icon={faEye}/> {this.state.data[i].viewerCount} </Card.Link>
-        <Card.Link> <button onClick={this.myFunc} style={{background: 'none', border:'none', color: (this.state.data != "" ? "black" : "red")}}><FontAwesomeIcon icon={faThumbsUp}/> {this.state.add === true ? (this.state.data[i].votes + 1) : this.state.data[i].votes} </button></Card.Link>
+        <Card.Link> <button value = {i} onClick={this.myFunc} style={{background: 'none', border:'none', color: (this.state.data[i] === false ? "black" : "red")}}><FontAwesomeIcon icon={faThumbsUp}/> {this.state.data[i].add === true ? (this.state.data[i].votes + 1) : this.state.data[i].votes} </button></Card.Link>
         </Card.Body>
         </Card>
+        </div>
       )
     }
     return cardArray;
@@ -42,7 +43,7 @@ class Landing extends React.Component {
       url: "http://localhost:3852/api/addImage"
     })
       .then(response => {
-        console.log("gotData!");
+        //console.log("gotData!");
         var allData = response.data;
         this.setState({
           data: allData
@@ -51,15 +52,67 @@ class Landing extends React.Component {
       })
       .catch(error => console.error(error));
     }
-
     myFunc(e) {
+      //this.setState({add: !this.state.add});
+      //console.log(e.target.value);
+      var element = e.target.value;
+      console.log(element);
+      console.log(this.state.data[element]);
+
+      var someProperty = {...this.state.data}
+      console.log(someProperty[element]);
+      var temp = someProperty[element].votes
+      console.log(temp);
+      //someProperty[element] = ...someProperty[element]
+      //console.log(this.state.data[element].add);
+/*
+      this.setState({
+        data: ...data, !(this.state.data[element].add)
+    });
+
+/*
+    this.state = {
+   someProperty: {
+      someOtherProperty: {
+          anotherProperty: {
+             flag: true
+          }
+          ..
+      }
+      ...
+   }
+   ...
+}
+
+this.setState(state => ({
+    ...state,
+    data: {
+        ...data.[element],
+        someOtherProperty: {
+            ...prevState.someProperty.someOtherProperty,
+            anotherProperty: {
+               ...prevState.someProperty.someOtherProperty.anotherProperty,
+               flag: false
+            }
+        }
+    }
+}))
+*/
+
+
+
+      /*
+      console.log(typeof(this.state.add[e.target.value]))
+      this.setState({add: ((this.state.add[element] === undefined) ? (this.state.add[e.target.value] = true) : this.state.add[e.target.value] = false ) });
+      //this.setState({add: ((this.state.add[e.target.value] === []) ? (this.state.add[e.target.value] = true) : this.state.add[e.target.value] = !(this.state.add[e.target.value]) });
+      //console.log(this.state.add);
+
       if(e.target.style.color === 'red'){
         e.target.style.color = 'black';
-        this.setState({add: false});
       }else{
           e.target.style.color = 'red';
-          this.setState({add: true})
       }
+      */
       }
 
 render(){

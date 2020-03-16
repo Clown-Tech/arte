@@ -43,6 +43,11 @@ const AddImageSchema = new mongoose.Schema({
     type: Array,
     alias: "user's viewer demographic",
     default: [],
+  },
+  add:{
+    type: Boolean,
+    alias: "updoot",
+    default: false,
   }
 });
 
